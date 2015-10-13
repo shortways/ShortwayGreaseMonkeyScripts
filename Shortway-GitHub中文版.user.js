@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Shortway-GitHub
+// @name        Shortway-GitHub中文版
 // @namespace   GitHub
 // @description GitHub中文版，实施翻译得到的中文界面
 // @include     https://github.com/*
