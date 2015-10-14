@@ -29,7 +29,8 @@
 
 	window.setTimeout(function(){			// 自动点击“下一页”
 		//$(".vd_page_btn").eq(1).click();	// 不知道为什么执行不了
-		$(".vd_page_btn")[$(".vd_page_btn").length-1].click(function(){return true});
+		//$(".vd_page_btn")[$(".vd_page_btn").length-1].click(function(){return true});
+		$(".vd_page_btn span:contains('下一页')")[0].click(function(){return true});
 	}, perItemTime * 21 + Math.random()*500);
 
 	$(".vd_add").each(function(i,e){	// 遍历，逐个添加另存
