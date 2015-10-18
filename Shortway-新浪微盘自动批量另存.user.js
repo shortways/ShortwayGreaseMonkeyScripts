@@ -4,20 +4,35 @@
 // @description Shortway-新浪微盘搜索海量共享资料后，自动批量另存、自动翻页
 // @include     http://vdisk.weibo.com/search/*
 // @icon        http://vdisk.weibo.com/favicon.ico
-// @version     2015.10.14
+// @version     2015.10.19
 // @grant       none
 // @author      Shortway
 // ==/UserScript==
 
 (function() {
+//	$("#weibo_top_public").hide();	// 隐藏页面头部浮动工具栏
+//	$(".vdisk_header_main").hide();	// 隐藏页面头部导航
+	$("#weibo_top_public,.vdisk_header_main").hide();	// 隐藏页面头部浮动工具栏、导航栏
+//	$(".my_vdisk_main").hide();		// 隐藏搜索结果提示
+//	$(".v_sort_head").hide();		// 隐藏表头
 
-//	$("#weibo_top_public").hide();	// 隐藏页面头部
-//	$(".vdisk_header_main").hide();	// 隐藏页面头部
-//	$(".my_vdisk_main").hide();		// 隐藏页面头部
-//	$(".v_sort_head").hide();		// 隐藏页面头部
+	(function ($) {	//通用方法：从URL中获取参数
+		$.getUrlParam = function (name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) return unescape(r[2]); return null;
+		}
+	})(jQuery);
+
+	var page = $.getUrlParam('page');	// 从URL中得到页码
+	if (page == null) page=1;
+	$(".my_disk span").after("<span>：第</span><span style='color:red'>"+page+"</span><span>页</span>");
+	$(".folder_path_main").hide();	// 隐藏提示
+
+	//var keyword = $.getUrlParam("keyword");	//当前搜索的关键词。自动新建文件夹功能待后续开发。
 
 	$(".sort_name_detail").each(function(i,e){	// 添加项目序号
-		$(this).html((i-(-1))+"&nbsp;&nbsp;"+$(this).html())
+		$(this).html( (i-(-1)) + "&nbsp;&nbsp;" + $(this).html())
 	});
 
 	window.setInterval(function(){
@@ -25,7 +40,7 @@
 		$(".vd_dload").hide();				// 隐藏下载按钮
 	},500);
 
-	var perItemTime = 2000;
+	var perItemTime = 3000;		//每个项目间隔时间
 
 	window.setTimeout(function(){			// 自动点击“下一页”
 		//$(".vd_page_btn").eq(1).click();	// 不知道为什么执行不了
@@ -36,6 +51,7 @@
 	$(".vd_add").each(function(i,e){	// 遍历，逐个添加另存
 		window.setTimeout(function(){
 			$(e).click();				// 点击添加
+			$("#ft" + i + "-1nm").click();		// 点选第一个目录
 			$(".W_btn_b").click();		// 点击确认（保存在默认的云盘根目录）
 			$(".vuiDialogMask").hide();	// 隐藏对话框遮罩
 			$(".vuiDialog").hide();		// 隐藏对话框
